@@ -7,7 +7,6 @@
   flex-direction: column;
 }
 .wrapper {
-  /* background: #ffa; */
   flex: 1;
 }
 
@@ -17,7 +16,7 @@
 }
 
 .Pane1 {
-	min-height: 100px;
+	min-height: 200px;
 }
 
 .Pane2 {
@@ -49,11 +48,36 @@
   border-bottom: 5px solid rgba(255, 255, 255, 0);
   cursor: grab;
   width: 100%;
+  overflow: visible; /* For IE */
+  padding: 0;
+  /* border: none; */
+  /* border-top: medium double #333; */
+  color: #333;
+  text-align: center;
+}
+
+.Resizer.horizontal:active {
+  cursor: grabbing;
+  cursor: -webkit-grabbing;
+  cursor: -moz-grabbing;
+}
+
+.Resizer.horizontal::before {
+  /* content: "•"; */
+  /* content: "∆"; */
+  /* content: "§"; */
+  content: "\2022";
+  display: inline-block;
+  position: relative;
+  top: -0.85em;
+  font-size: 1.5em;
+  padding: 0 0.25em;
+  background: white;
 }
 
 .Resizer.horizontal:hover {
-  border-top: 5px solid rgba(0, 0, 0, 0.5);
-	border-bottom: 5px solid rgba(0, 0, 0, 0.5);
+  /* border-top: 5px solid rgba(0, 0, 0, 0.5);
+  border-bottom: 5px solid rgba(0, 0, 0, 0.5); */
 }
 
 .Resizer.vertical {

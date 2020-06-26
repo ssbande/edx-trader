@@ -6,7 +6,10 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
+    "ag-grid-community": "^23.2.1",
+    "ag-grid-react": "^23.2.1",
     "antd": "^4.3.5",
+    "immer": "^7.0.5",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.0",
@@ -14,6 +17,7 @@
     "react-split-pane": "^0.1.91",
     "react-window-size": "^1.2.2",
     "redux": "^4.0.5",
+    "redux-create-reducer": "^2.0.0",
     "redux-thunk": "^2.3.0"
   },
   "scripts": {

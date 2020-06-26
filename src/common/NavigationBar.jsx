@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Layout, Menu, Drawer, Button } from 'antd';
-import { selectMenu } from '../infrastructure/actions';
+import { selectMenu, setIsMobileView } from '../infrastructure/actions';
 import { StockOutlined, BarsOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
 
@@ -21,7 +21,7 @@ class NavigationBar extends Component {
 		this.setState({
 			isMobileMenu: window.innerWidth < this.mobileWidth,
 			width: window.innerWidth
-		});
+		}, () => this.props.setIsMobileView(window.innerWidth < this.mobileWidth));
 	}
 
 	toggleMobileMenu = () => {
@@ -75,6 +75,7 @@ class NavigationBar extends Component {
 
 const mapDispatchToProps = dispatch => ({
 	selectMenu: (val) => dispatch(selectMenu(val)),
+	setIsMobileView: (val) => dispatch(setIsMobileView(val)),
 })
 
 const mapStateToProps = state => ({

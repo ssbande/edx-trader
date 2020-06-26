@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import SplitPane, { Pane } from 'react-split-pane';
 import { changePanelHeight, selectMenu } from '../infrastructure/actions';
+import OrderEntry from '../order-entry/EntryContainer';
+import OrderBlotter from '../order-blotter/BlotterContainer';
 import '../content/PaneStyles.css';
 
 const ContentHolder = (props) => {
@@ -13,8 +15,12 @@ const ContentHolder = (props) => {
 		<div className="parent">
 			<div className="wrapper">
 				<SplitPane split="horizontal" style={{ position: 'relative' }} onDragFinished={dragFinished}>
-					<Pane id='ticketHolder' ref={props.ticketPanel} className='' style={{ minHeight: '200px' }}>This Pane has a minimum size of 200px</Pane>
-					<Pane id='dataGridHolder' ref={props.dataGridPanel} className=''>Order Blotter</Pane>
+					<Pane id='ticketHolder' ref={props.ticketPanel} className='' style={{ overflow: 'auto' }} >
+						<OrderEntry />
+					</Pane>
+					<Pane id='dataGridHolder' ref={props.dataGridPanel} className=''>
+						<OrderBlotter />
+					</Pane>
 				</SplitPane>
 			</div>
 		</div>
