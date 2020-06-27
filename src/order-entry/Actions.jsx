@@ -8,12 +8,12 @@ const { Text } = Typography;
 const actionAttributes = {
   BUY: { color: '#00A86B', displayText: 'Buy' },
   SELL: { color: '#ff0038', displayText: 'Sell' },
-  action: { color: '', displayText: 'Please select an action' },
+  ACTION: { color: '', displayText: 'Please select an action' },
 }
 
 const Actions = props => {
   const handleActionChange = (e) => {
-    props.setAction(e.item.props.value);
+    props.setAction(actionAttributes[e.item.props.value].displayText);
   }
 
   const actionMenu = (
@@ -29,9 +29,9 @@ const Actions = props => {
     <Dropdown overlay={actionMenu} placement="bottomCenter">
       <Button type='primary' style={{
         width: 200,
-        backgroundColor: actionAttributes[action].color,
-        borderColor: actionAttributes[action].color
-      }}><div className='justifiedDiv'>{actionAttributes[action].displayText} <DownOutlined /></div>
+        backgroundColor: actionAttributes[action.toUpperCase()].color,
+        borderColor: actionAttributes[action.toUpperCase()].color
+      }}><div className='justifiedDiv'>{actionAttributes[action.toUpperCase()].displayText} <DownOutlined /></div>
       </Button>
     </Dropdown>
   </Fragment>

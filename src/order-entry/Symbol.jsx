@@ -30,11 +30,13 @@ const Symbol = props => {
   return <Fragment>
     <div><Text strong>Symbol</Text></div>
     <Select
+      showArrow={false}
       showSearch
       style={{ width: 200 }}
       placeholder="Select a symbol"
       optionFilterProp="children"
       onChange={handleSymbolChange}
+      value={props.symbol}
       notFoundContent={<div>Not found</div>}
       filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
     >

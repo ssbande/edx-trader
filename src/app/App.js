@@ -1,7 +1,7 @@
 import React from 'react';
 import { Layout } from 'antd';
-import NavigationBar from './../common/NavigationBar';
-import ContentHolder from './../common/ContenHolder';
+import NavigationBar from './NavigationBar';
+import ContentHolder from './ContenHolder';
 import '../content/App.css';
 
 const { Content, Footer } = Layout;

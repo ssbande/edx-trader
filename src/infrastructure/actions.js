@@ -1,4 +1,4 @@
-import { DATAGRID_PANEL_HEIGHT, SELECT_MENU, IS_MOBILE_VIEW, SET_ACTION, SET_SYMBOL, SET_QUANTITY, SET_ORDER_TYPE, SET_PRICE, SET_STOP_PRICE, SET_COMMENT, SET_TIF } from './actionTypes';
+import { SUBMIT_ORDER, CLEAR_DATA, DATAGRID_PANEL_HEIGHT, SELECT_MENU, IS_MOBILE_VIEW, SET_ACTION, SET_SYMBOL, SET_QUANTITY, SET_ORDER_TYPE, SET_PRICE, SET_STOP_PRICE, SET_COMMENT, SET_TIF } from './actionTypes';
 
 //#region Common Actions 
 
@@ -83,4 +83,16 @@ export const setTif = (val) => dispatch => {
   })
 }
 
+export const submitOrder = (values) => dispatch => {
+  dispatch({
+    type: SUBMIT_ORDER,
+    payload: values
+  })
+}
+
+export const clearData = (values) => dispatch => {
+  dispatch({
+    type: CLEAR_DATA
+  });
+}
 //#endregion

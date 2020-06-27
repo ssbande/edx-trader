@@ -7,7 +7,6 @@ const { Text } = Typography
 const { TextArea } = Input;
 const Comment = props => {
   const handleCommentChange = (e) => {
-    console.log('e: ', e.currentTarget.value)
     props.setComment(e.currentTarget.value)
   }
 

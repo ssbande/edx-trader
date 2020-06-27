@@ -29,7 +29,7 @@ const EntryContainer = props => {
     <Row className='topSmallMargin' gutter={gutter} justify="center">
       <Col className="gutter-row topSmallMargin"><Comment /></Col>
       <Col className="gutter-row topSmallMargin"><Tif /></Col>
-      <Col className="gutter-row topSmallMargin"><Submit /></Col>
+      <Col className="gutter-row topSmallMargin"><Submit setLoader={props.setLoader}/></Col>
     </Row>
   </section>
 }

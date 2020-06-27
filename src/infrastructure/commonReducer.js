@@ -5,7 +5,8 @@ import { DATAGRID_PANEL_HEIGHT, SELECT_MENU, IS_MOBILE_VIEW } from "./actionType
 const initialState = {
   panel2Top: null,
   selectedMenu: ['1'],
-  isMobileView: false
+  isMobileView: false,
+  loadPercent: 0,
 }
 
 const common = createReducer(initialState, {
@@ -14,7 +15,7 @@ const common = createReducer(initialState, {
     draft.selectedMenu = ['2'];
   }),
   [SELECT_MENU]: (state, action) => produce(state, draft => { draft.selectedMenu = [action.payload]; }),
-  [IS_MOBILE_VIEW]: (state, action) => produce(state, draft => { draft.isMobileView = action.payload })
+  [IS_MOBILE_VIEW]: (state, action) => produce(state, draft => { draft.isMobileView = action.payload }),
 })
 
 export default common;

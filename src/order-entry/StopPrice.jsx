@@ -16,7 +16,7 @@ const Quantity = props => {
       disabled={orderType !== 'LIMIT'} 
       precision={2} 
       style={{ width: 200 }} 
-      min={1} max={999} 
+      min={1}
       onChange={handleStopPriceChange} 
       placeholder='Enter Stop Price' 
       value={stopPrice} />
