@@ -44,7 +44,7 @@
   color: white;
 }
 
-.redGreen {
+.greenBack {
   background-color: #00A86B;
   color: white;
 }
@@ -57,12 +57,11 @@
 
 .orderSpinner {
   width: 300px !important;
-  /* display: flex; */
   justify-content: center;
   align-items: center;
-  /* position: absolute;
+  position: absolute;
   left: 50%;
-  top: 50%; */
+  top: 50%;
   transform: translate(-50%, -50%);
   height: auto !important;
   border: 1px solid #1e90ff61;

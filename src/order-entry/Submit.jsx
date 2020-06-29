@@ -1,25 +1,37 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { submitOrder, clearData } from '../infrastructure/actions';
 import { Button } from 'antd';
 
+import Constants from '../content/constants';
+import { submitOrder, clearData } from '../infrastructure/actions';
+
 const SubmitEntry = props => {
+  const { entryLabels } = Constants;
   const { orderType, action, symbol, quantity, price, stopPrice } = props;
-  const isSubmitEnabled = (orderType === 'LIMIT' && action !== 'action' && !!symbol && !!quantity && !!price && !!stopPrice)
-    || (orderType === 'MARKET' && action !== 'action' && !!symbol && !!quantity)
+  const isSubmitEnabled = (orderType === 'LIMIT'
+    && action !== 'action'
+    && !!symbol
+    && !!quantity
+    && !!price
+    && !!stopPrice)
+    || (orderType === 'MARKET'
+      && action !== 'action'
+      && !!symbol
+      && !!quantity)
 
   const handleSubmit = () => {
-    const { orderType, action, symbol, quantity, price, stopPrice, tif, comment, setLoader, submitOrder, clearData } = props;
+    const { tif, comment, setLoader, submitOrder, clearData } = props;
     setLoader(true);
     setTimeout(() => {
       submitOrder({
-        action, 
-        symbol, 
-        quantity, 
-        orderType, 
-        price, 
-        stopPrice, 
-        tif, 
+        action,
+        symbol,
+        quantity,
+        orderType,
+        price,
+        stopPrice,
+        tif,
         comment
       });
       clearData()
@@ -27,13 +39,28 @@ const SubmitEntry = props => {
   }
 
   return <Button
+    className='stdInputWidth'
     type='primary'
     disabled={!isSubmitEnabled}
-    style={{ width: 200, height: 54 }}
+    style={{ height: 54 }}
     onClick={handleSubmit}
     size='large'>
-    Submit
-</Button>
+    {entryLabels.submit}
+  </Button>
+}
+
+SubmitEntry.propTypes = {
+  action: PropTypes.string.isRequired,
+  clearData: PropTypes.func.isRequired,
+  comment: PropTypes.string,
+  orderType: PropTypes.string.isRequired,
+  price: PropTypes.number,
+  quantity: PropTypes.number,
+  setLoader: PropTypes.func.isRequired,
+  stopPrice: PropTypes.number,
+  submitOrder: PropTypes.func.isRequired,
+  symbol: PropTypes.string,
+  tif: PropTypes.string
 }
 
 const mapDispatchToProps = dispatch => ({

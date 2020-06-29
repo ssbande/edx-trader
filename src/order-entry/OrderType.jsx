@@ -1,17 +1,17 @@
 import React, { Fragment } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { setOrderType, setPrice, setStopPrice } from '../infrastructure/actions';
 import { Menu, Button, Dropdown, Typography } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 
-const { Text } = Typography;
-const orderTypeAttributes = {
-  MARKET: { displayText: 'Market' },
-  LIMIT: { displayText: 'Limit' },
-  orderType: { displayText: 'select order type' },
-}
+import Constants from '../content/constants';
+import { setOrderType, setPrice, setStopPrice } from '../infrastructure/actions';
 
+const { Text } = Typography;
 const OrderType = props => {
+  const { orderTypeMenu: orderTypes, entryLabels } = Constants;
+  const { orderType } = props;
+
   const handleOrderTypeChange = (e) => {
     props.setOrderType(e.item.props.value);
     if (e.item.props.value !== 'LIMIT') {
@@ -27,15 +27,23 @@ const OrderType = props => {
     </Menu>
   )
 
-  const { orderType } = props;
   return <Fragment>
-    <div><Text strong>Order Type</Text></div>
+    <div><Text strong>{entryLabels.orderType}</Text></div>
     <Dropdown overlay={orderTypeMenu} placement="bottomCenter">
-      <Button style={{ width: 200 }}>
-        <div className='justifiedDiv'>{orderTypeAttributes[orderType].displayText} <DownOutlined /></div>
+      <Button className='stdInputWidth'>
+        <div className='justifiedDiv'>
+          {orderTypes[orderType].displayText} <DownOutlined />
+        </div>
       </Button>
     </Dropdown>
   </Fragment>
+}
+
+OrderType.propTypes = {
+  orderType: PropTypes.string,
+  setOrderType: PropTypes.func.isRequired,
+  setPrice: PropTypes.func.isRequired,
+  setStopPrice: PropTypes.func.isRequired
 }
 
 const mapDispatchToProps = dispatch => ({

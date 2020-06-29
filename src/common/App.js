@@ -1,8 +1,10 @@
 import React from 'react';
 import { Layout } from 'antd';
-import NavigationBar from './NavigationBar';
+
 import ContentHolder from './ContenHolder';
+import NavigationBar from './NavigationBar';
 import '../content/App.css';
+import constants from '../content/constants';
 
 const { Content, Footer } = Layout;
 
@@ -14,7 +16,10 @@ const App = () => {
         <ContentHolder />
       </div>
     </Content>
-    <Footer className='appFooter'>JPM Assignment ©2020 Created by Shreyas Bande</Footer>
+    <Footer className='appFooter'>
+      {constants.appFooterText}
+    </Footer>
   </Layout>
 }
+
 export default App;

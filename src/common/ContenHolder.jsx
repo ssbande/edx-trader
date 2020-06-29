@@ -1,64 +1,63 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types'
 import SplitPane, { Pane } from 'react-split-pane';
-import { changePanelHeight, selectMenu } from '../infrastructure/actions';
-import { Spin, Progress } from 'antd';
+import { Spin } from 'antd';
+
+import LoadIndicator from './LoadIndicator';
+import Constants from '../content/constants';
+import '../content/PaneStyles.css';
+import { changePanelHeight } from '../infrastructure/actions';
 import OrderEntry from '../order-entry/EntryContainer';
 import OrderBlotter from '../order-blotter/BlotterContainer';
-import '../content/PaneStyles.css';
 
 const ContentHolder = (props) => {
 	const [submittingOrder, setSubmittingOrder] = useState(false);
 	const [loadPercent, setLoadPercent] = useState(0);
 
-	let int;
 	const startLoader = (val) => {
 		setLoadPercent(0);
 		setSubmittingOrder(val);
-		clearInterval(int);
 		if (val) {
-			int = setInterval(() => {
+			/**
+			 * If the loader is starting (val is true), 
+			 * increase the percentage by 5 (percentIncrementValue), every 100ms (percentIncrementTimeInterval). 
+			 * That way, the loader will be finished completely in 2 seconds (loaderTimeDuration). 
+			 */
+			const int = setInterval(() => {
 				setLoadPercent(prevPercent => {
-					if (prevPercent + 5 === 100) {
-						clearInterval(int);
-					}
-					return prevPercent + 5
+					const newPercent = prevPercent + Constants.percentIncrementValue;
+					if (newPercent === Constants.percentTotal) clearInterval(int);
+					return newPercent;
 				});
-
-			}, 100);
+			}, Constants.percentIncrementTimeInterval);
 		}
 	}
 
-	const dragFinished = (e) => {
-		props.changePanelHeight(e)
-	}
-
-	const LoadIndicator = <div className='orderSpinner'>
-		<Progress percent={loadPercent} showInfo={false} strokeColor={{'0%': '#108ee9', '100%': '#87d068'}} />
-		<div>Submitting Order ... </div>
-	</div>
-
-	return <Spin indicator={LoadIndicator} spinning={submittingOrder}>
+	const dragFinished = (e) => props.changePanelHeight(e)
+	
+	return <Spin indicator={<LoadIndicator loadPercent={loadPercent}/>} spinning={submittingOrder}>
 		<div className='panelHolder'>
 			<div className="parent">
-				<div className="wrapper">
 					<SplitPane split="horizontal" style={{ position: 'relative' }} onDragFinished={dragFinished}>
-						<Pane id='ticketHolder' className='' style={{ overflow: 'auto' }} >
+						<Pane id='ticketHolder' className='autoOverflow' >
 							<OrderEntry setLoader={(val) => startLoader(val)} />
 						</Pane>
 						<Pane id='dataGridHolder' className=''>
 							<OrderBlotter setLoader={(val) => startLoader(val)} />
 						</Pane>
 					</SplitPane>
-				</div>
 			</div>
 		</div>
 	</Spin>
 }
 
+ContentHolder.propTypes = {
+	changePanelHeight: PropTypes.func.isRequired
+}
+
 const mapDispatchToProps = dispatch => ({
-	changePanelHeight: (val) => dispatch(changePanelHeight(val)),
-	selectMenu: (val) => dispatch(selectMenu(val)),
+	changePanelHeight: (val) => dispatch(changePanelHeight(val))
 })
 
 const mapStateToProps = state => ({})

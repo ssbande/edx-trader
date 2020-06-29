@@ -1,7 +1,10 @@
 import React, { Fragment } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { setComment } from '../infrastructure/actions';
 import { Typography, Input } from 'antd';
+
+import Constants from '../content/constants';
+import { setComment } from '../infrastructure/actions';
 
 const { Text } = Typography
 const { TextArea } = Input;
@@ -11,15 +14,21 @@ const Comment = props => {
   }
 
   const { comment } = props;
+  const { entryLabels: { comment: commentHeading, phComment } } = Constants;
   return <Fragment>
-    <div><Text strong>Comment</Text></div>
+    <div><Text strong>{commentHeading}</Text></div>
     <TextArea
-      placeholder="Enter Comment"
       autoSize
-      style={{ width: '200px' }}
+      placeholder={phComment}
+      className='stdInputWidth'
       onChange={handleCommentChange}
       value={comment} />
   </Fragment>
+}
+
+Comment.propTypes = {
+  comment: PropTypes.string,
+  setComment: PropTypes.func.isRequired
 }
 
 const mapDispatchToProps = dispatch => ({

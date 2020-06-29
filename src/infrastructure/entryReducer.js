@@ -1,6 +1,17 @@
 import { createReducer } from 'redux-create-reducer';
-import produce from "immer"
-import { SET_ACTION, CLEAR_DATA, SET_SYMBOL, SET_QUANTITY, SET_ORDER_TYPE, SET_PRICE, SET_STOP_PRICE, SET_COMMENT, SET_TIF } from "./actionTypes"
+import produce from "immer";
+
+import { 
+  CLEAR_DATA,
+  SET_ACTION, 
+  SET_COMMENT,  
+  SET_ORDER_TYPE,
+  SET_PRICE,
+  SET_QUANTITY,
+  SET_STOP_PRICE,   
+  SET_SYMBOL, 
+  SET_TIF 
+} from "./actionTypes"
 
 const initialState = {
   action: 'action',
