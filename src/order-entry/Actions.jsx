@@ -1,19 +1,19 @@
 import React, { Fragment } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Dropdown, Button, Typography, Menu } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
+
 import { setAction } from '../infrastructure/actions';
+import Constants from '../content/constants';
 
 const { Text } = Typography;
-const actionAttributes = {
-  BUY: { color: '#00A86B', displayText: 'Buy' },
-  SELL: { color: '#ff0038', displayText: 'Sell' },
-  action: { color: '', displayText: 'Please select an action' },
-}
-
 const Actions = props => {
+  const { actionMenu: actions, entryLabels } = Constants;
+  const selectedAction = props.action.toUpperCase();
+
   const handleActionChange = (e) => {
-    props.setAction(e.item.props.value);
+    props.setAction(actions[e.item.props.value].displayText);
   }
 
   const actionMenu = (
@@ -23,18 +23,27 @@ const Actions = props => {
     </Menu>
   );
 
-  const { action } = props;
   return <Fragment>
-    <div><Text strong>Action</Text></div>
+    <div><Text strong>{entryLabels.action}</Text></div>
     <Dropdown overlay={actionMenu} placement="bottomCenter">
-      <Button type='primary' style={{
-        width: 200,
-        backgroundColor: actionAttributes[action].color,
-        borderColor: actionAttributes[action].color
-      }}><div className='justifiedDiv'>{actionAttributes[action].displayText} <DownOutlined /></div>
+      <Button 
+        type='primary' 
+        className='stdInputWidth' 
+        style={{
+        backgroundColor: actions[selectedAction].color,
+        borderColor: actions[selectedAction].color
+      }}>
+        <div className='justifiedDiv'>
+          {actions[selectedAction].displayText} <DownOutlined />
+        </div>
       </Button>
     </Dropdown>
   </Fragment>
+}
+
+Actions.propTypes = {
+  action: PropTypes.string.isRequired,
+  setAction: PropTypes.func.isRequired
 }
 
 const mapDispatchToProps = dispatch => ({
@@ -44,4 +53,5 @@ const mapDispatchToProps = dispatch => ({
 const mapStateToProps = state => ({
   action: state.entry.action
 })
+
 export default connect(mapStateToProps, mapDispatchToProps)(Actions);

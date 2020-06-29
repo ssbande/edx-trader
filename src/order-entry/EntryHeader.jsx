@@ -1,10 +1,12 @@
 import React from 'react';
 import { Row, Col } from 'antd';
 
+import Constants from '../content/constants';
+
 const EntryHeader = () => {
-  return <Row className='sectionHeader' gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
+  return <Row className='sectionHeader' gutter={Constants.gutterConfig}>
     <Col className="gutter-row" span={12}>
-      <div className='headText'>Order Entry</div>
+      <div className='headText'>{Constants.entryLabels.heading}</div>
     </Col>
   </Row>
 }

@@ -1,11 +1,17 @@
 import React, { Fragment } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { setTif } from '../infrastructure/actions';
 import { Menu, Button, Dropdown, Typography } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 
+import Constants from '../content/constants';
+import { setTif } from '../infrastructure/actions';
+
 const { Text } = Typography;
 const Tif = props => {
+  const { entryLabels } = Constants;
+  const { tif } = props;
+
   const handleTifChange = (e) => {
     props.setTif(e.item.props.value);
   }
@@ -19,15 +25,19 @@ const Tif = props => {
     </Menu>
   )
 
-  const { tif } = props;
   return <Fragment>
-    <div><Text strong>Order Type</Text></div>
+    <div><Text strong>{entryLabels.tif}</Text></div>
     <Dropdown overlay={tifMenu} placement="bottomCenter">
-      <Button style={{ width: 200 }}>
-        <div className='justifiedDiv'>{tif || 'Please select TIF'} <DownOutlined /></div>
+      <Button className='stdInputWidth'>
+        <div className='justifiedDiv'>{tif || entryLabels.phTif} <DownOutlined /></div>
       </Button>
     </Dropdown>
   </Fragment>
+}
+
+Tif.propTypes = {
+  tif: PropTypes.string,
+  setTif: PropTypes.func.isRequired
 }
 
 const mapDispatchToProps = dispatch => ({

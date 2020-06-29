@@ -1,25 +1,17 @@
 import React, { Fragment } from 'react';
+import PropTypes from 'prop-types';
 import { Select, Typography } from 'antd';
-import { setSymbol } from '../infrastructure/actions';
 import { connect } from 'react-redux';
 
-const { Text } = Typography;
-const symbolTicker = [
-  'AAPL',
-  'MSFT',
-  'GOOGL',
-  'VZ',
-  'MMM',
-  'NFLX',
-  'FB',
-  'TWTR',
-  'AMZN',
-  'EBAY'
-]
+import Constants from '../content/constants';
+import { setSymbol } from '../infrastructure/actions';
 
+const { Text } = Typography;
 const { Option } = Select;
+
 const Symbol = props => {
-  const createSymbolList = () => symbolTicker.map(symbol => {
+  const { entryLabels, symbolTickers } = Constants;
+  const createSymbolList = () => symbolTickers.map(symbol => {
     return <Option key={symbol} value={symbol}>{symbol}</Option>
   })
 
@@ -28,19 +20,26 @@ const Symbol = props => {
   }
 
   return <Fragment>
-    <div><Text strong>Symbol</Text></div>
+    <div><Text strong>{entryLabels.symbol}</Text></div>
     <Select
+      showArrow={false}
       showSearch
-      style={{ width: 200 }}
-      placeholder="Select a symbol"
+      className='stdInputWidth'
+      placeholder={entryLabels.phSymbol}
       optionFilterProp="children"
       onChange={handleSymbolChange}
+      value={props.symbol}
       notFoundContent={<div>Not found</div>}
       filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
     >
       {createSymbolList()}
     </Select>
   </Fragment>
+}
+
+Symbol.propTypes = {
+  symbol: PropTypes.string,
+  setSymbol: PropTypes.func.isRequired
 }
 
 const mapDispatchToProps = dispatch => ({

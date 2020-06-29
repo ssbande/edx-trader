@@ -1,86 +1,75 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Row, Col, Typography } from 'antd';
-import { MehTwoTone } from '@ant-design/icons';
-import '../content/Site.css';
-import { AgGridReact } from 'ag-grid-react';
-import 'ag-grid-community/dist/styles/ag-grid.css';
-import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
+import { Modal } from 'antd';
 
-const { Text } = Typography;
+import Constants from '../content/constants';
+import '../content/Site.css';
+import BlotterHeader from './BlotterHeader';
+import GridData from './GridData';
 
 class BlotterContainer extends Component {
   state = {
-    columnDefs: [
-      {
-        headerName: "Action", field: "action", sortable: true, cellClassRules: {
-          'redBack': function (params) { return params.value === 'Sell' },
-          'redGreen': function (params) { return params.value === 'Buy' }
-        }
-      },
-      { headerName: "Symbol", field: "symbol", sortable: true },
-      { headerName: "Qty", field: "qty", sortable: true },
-      { headerName: "Order Type", field: "orderType", sortable: true },
-      { headerName: "TIF", field: "tif", sortable: true },
-      { headerName: "Price", field: "price", sortable: true },
-      { headerName: "Stop Price", field: "stopPrice", sortable: true },
-      {
-        headerName: "Comment", field: "comment", sortable: true,
-        tooltipField: 'comment',
-        tooltipComponentParams: { color: 'dodgerblue' },
-      }
-    ],
-    rowData: [
-      { action: 'Buy', symbol: 'MSFT', qty: 50, orderType: 'Limit', tif: 'GTC', stopPrice: 100.25, comment: 'some Comment', price: 72000 },
-      { action: 'Sell', symbol: 'MSFT', qty: 50, orderType: 'Limit', tif: 'GTC', stopPrice: 100.25, comment: 'some Comment', price: 78000 },
-    ]
-    // rowData: []
+    showErrModal: false
+  }
+
+  componentDidUpdate(prev) {
+    if (this.props.orders.length > prev.orders.length
+      && this.props.orders.length !== 0) {
+      this.props.setLoader(false)
+    }
+
+    if (!this.props.orderSubmitSuccess
+      && this.props.orderSubmitSuccess !== prev.orderSubmitSuccess) {
+      this.props.setLoader(false);
+      this.setState({ showErrModal: true })
+    }
+  }
+
+  errorModal = () => {
+    Modal.error({
+      title: Constants.failedOrderModalTitle,
+      content: Constants.failedOrderModalContent,
+      onOk: () => this.setState({ showErrModal: false })
+    });
   }
 
   render() {
     return <section style={{ marginTop: '15px' }}>
-      <Row className='sectionHeader' gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-        <Col className="gutter-row" span={10}>
-          <div className='headText'>Order Blotter</div>
-        </Col>
-        <Col className="gutter-row" span={14}>
-          {this.state.rowData && this.state.rowData.length
-            ? <div className='rightAlign'>
-              <div><Text type="warning" strong>Last Updated</Text></div>
-              <Text type="secondary" className='subText'>2020-06-22 10:27:11 PM</Text>
-            </div>
-            : null}
-        </Col>
-      </Row>
-      <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-        <Col className="gutter-row" span={24}>
-          {this.state.rowData && this.state.rowData.length
-            ? <div className="ag-theme-alpine gridContainer">
-              <AgGridReact
-                domLayout='autoHeight'
-                pagination
-                paginationPageSize={10}
-                onGridReady={params => !this.props.common.isMobileView && params.api.sizeColumnsToFit()}
-                onGridSizeChanged={params => !this.props.common.isMobileView && params.api.sizeColumnsToFit()}
-                columnDefs={this.state.columnDefs}
-                rowData={this.state.rowData}
-                tooltipShowDelay={0}>
-              </AgGridReact>
-            </div>
-            : <div className='centerAlign padded'>
-              <MehTwoTone style={{ fontSize: '16px' }}/> No Orders yet
-            </div>}
-        </Col>
-      </Row>
+      {this.state.showErrModal && <div>{this.errorModal()}</div>}
+      <BlotterHeader lastUpdatedDate={this.props.lastUpdatedDate} />
+      <GridData
+        rowData={this.props.orders}
+        isMobileView={this.props.isMobileView} />
     </section>
   }
 }
 
-const mapDispatchToProps = dispatch => ({
+BlotterContainer.propTypes = {
+  isMobileView: PropTypes.bool.isRequired,
+  lastUpdatedDate: PropTypes.string,
+  orderSubmitSuccess: PropTypes.bool,
+  orders: PropTypes.arrayOf(PropTypes.shape({
+    action: PropTypes.string.isRequired,
+    comment: PropTypes.string,
+    orderType: PropTypes.string.isRequired,
+    price: PropTypes.number,
+    quantity: PropTypes.number.isRequired,
+    stopPrice: PropTypes.number,
+    symbol: PropTypes.string.isRequired,
+    tif: PropTypes.string
+  })).isRequired,
+  sessionOrderCount: PropTypes.number,
+  setLoader: PropTypes.func.isRequired
+}
 
+const mapStateToProps = state => ({
+  orders: state.orders.orders,
+  isMobileView: state.common.isMobileView,
+  lastUpdatedDate: state.orders.lastUpdatedDate,
+  orderSubmitSuccess: state.orders.orderSubmitSuccess,
+  sessionOrderCount: state.orders.sessionOrderCount
 })
 
-const mapStateToProps = state => ({ ...state })
-
-export default connect(mapStateToProps, mapDispatchToProps)(BlotterContainer)
+export default connect(mapStateToProps)(BlotterContainer)
 

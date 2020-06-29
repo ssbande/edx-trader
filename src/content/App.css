@@ -75,3 +75,11 @@ body {
 .ant-menu-item.rightAppMenuItem.ant-menu-item-only-child.ant-menu-item-selected {
   border-bottom: 2px solid transparent;
 }
+
+.autoOverflow {
+  overflow: auto
+}
+
+.stdInputWidth {
+  width: 200px
+}

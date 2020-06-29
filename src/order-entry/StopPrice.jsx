@@ -1,26 +1,38 @@
 import React, { Fragment } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { setStopPrice } from '../infrastructure/actions';
 import { InputNumber, Typography } from 'antd';
 
+import Constants from '../content/constants';
+import { setStopPrice } from '../infrastructure/actions';
+
 const { Text } = Typography;
-const Quantity = props => {
+const StopPrice = props => {
+  const { entryLabels } = Constants;
+  const { stopPrice, orderType } = props;
+
   const handleStopPriceChange = (e) => {
     props.setStopPrice(e)
   }
 
-  const { stopPrice, orderType } = props;
   return <Fragment>
-    <div><Text strong>Stop Price</Text></div>
-    <InputNumber 
-      disabled={orderType !== 'LIMIT'} 
-      precision={2} 
-      style={{ width: 200 }} 
-      min={1} max={999} 
-      onChange={handleStopPriceChange} 
-      placeholder='Enter Stop Price' 
+    <div><Text strong>{entryLabels.stopPrice}</Text></div>
+    <InputNumber
+      disabled={orderType !== 'LIMIT'}
+      precision={2}
+      className='stdInputWidth'
+      min={1}
+      step={0.5}
+      onChange={handleStopPriceChange}
+      placeholder={entryLabels.phStopPrice}
       value={stopPrice} />
   </Fragment>
+}
+
+StopPrice.propTypes = {
+  orderType: PropTypes.string.isRequired,
+  stopPrice: PropTypes.string,
+  setStopPrice: PropTypes.func.isRequired
 }
 
 const mapDispatchToProps = dispatch => ({
@@ -32,4 +44,4 @@ const mapStateToProps = state => ({
   orderType: state.entry.orderType
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Quantity);
+export default connect(mapStateToProps, mapDispatchToProps)(StopPrice);
